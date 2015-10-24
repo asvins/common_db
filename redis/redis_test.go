@@ -1,4 +1,4 @@
-package commonDB
+package redis
 
 //for testing redis, make sure you have a local redis server up and running on port 6379
 

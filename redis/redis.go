@@ -1,4 +1,4 @@
-package commonDB
+package redis
 
 // redis is a database component for key/value storing
 
