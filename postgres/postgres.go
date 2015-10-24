@@ -10,29 +10,29 @@ const (
 	databaseType = "postgres"
 )
 
-func getUser() string {
-	return "postgres"
+// Config - struct that has the database configuration attrs
+type Config struct {
+	User    string
+	DbName  string
+	SSLMode string
 }
 
-func getDbName() string {
-	return "warehouse"
+// NewConfig returns a new Config object
+func NewConfig(user, dbName, sslMode string) *Config {
+	return &Config{
+		User:    user,
+		DbName:  dbName,
+		SSLMode: sslMode,
+	}
 }
 
-func getSSLMode() string {
-	return "disable"
+func buildArgs(config *Config) string {
+	return "user=" + config.User + " dbname=" + config.DbName + " sslmode=" + config.SSLMode
 }
 
-func buildArgs(user, dbName, sslmode string) string {
-	return "user=" + user + " dbname=" + dbName + " sslmode=" + sslmode
-}
-
-//GetDatabase ...
-func GetDatabase() *gorm.DB {
-	user := getUser()
-	dbName := getDbName()
-	sslmode := getSSLMode()
-
-	db, err := gorm.Open(databaseType, buildArgs(user, dbName, sslmode))
+//GetDatabase will return a pointer to gorm.DB base on the config struct passed as argument
+func GetDatabase(config *Config) *gorm.DB {
+	db, err := gorm.Open(databaseType, buildArgs(config))
 	if err != nil {
 		panic(err)
 	}
