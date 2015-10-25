@@ -1,6 +1,9 @@
 package postgres
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/jinzhu/gorm"
 	//Blank import needed to call init from pq
 	_ "github.com/lib/pq"
@@ -27,7 +30,9 @@ func NewConfig(user, dbName, sslMode string) *Config {
 }
 
 func buildArgs(config *Config) string {
-	return "user=" + config.User + " dbname=" + config.DbName + " sslmode=" + config.SSLMode
+	return fmt.Sprintf("user=%s dbname=%s sslmode=%s host=%s port=%s",
+		config.User, config.DbName, config.SSLMode, os.Getenv("DB_PORT_5432_TCP_ADDR"), os.Getenv("DB_PORT_5432_TCP_PORT"),
+	)
 }
 
 //GetDatabase will return a pointer to gorm.DB base on the config struct passed as argument
