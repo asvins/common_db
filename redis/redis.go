@@ -4,6 +4,7 @@ package redis
 
 import (
 	"encoding/json"
+	"os"
 
 	"gopkg.in/redis.v3"
 )
@@ -16,7 +17,7 @@ type RedisClient struct {
 // NewRedisClient Creates client and opens a connection to the database
 func NewRedisClient() *RedisClient {
 	rClient := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     os.Getenv("REDIS_PORT_6379_TCP_ADDR") + ":" + os.Getenv("REDIS_PORT_6379_TCP_PORT"),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})

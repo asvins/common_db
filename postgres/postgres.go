@@ -30,8 +30,18 @@ func NewConfig(user, dbName, sslMode string) *Config {
 }
 
 func buildArgs(config *Config) string {
+	host := os.Getenv("DB_PORT_5432_TCP_ADDR")
+	if host == "" {
+		host = "127.0.0.1"
+	}
+
+	port := os.Getenv("DB_PORT_5432_TCP_PORT")
+	if port == "" {
+		port = "5432"
+	}
+
 	return fmt.Sprintf("user=%s dbname=%s sslmode=%s host=%s port=%s",
-		config.User, config.DbName, config.SSLMode, os.Getenv("DB_PORT_5432_TCP_ADDR"), os.Getenv("DB_PORT_5432_TCP_PORT"),
+		config.User, config.DbName, config.SSLMode, host, port,
 	)
 }
 
